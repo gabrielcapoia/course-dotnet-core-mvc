@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capoia.UI.Site", "src\Capoia.UI.Site\Capoia.UI.Site.csproj", "{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37EA918E-8F67-4245-854F-EAEB2C45B747}
+	EndGlobalSection
+EndGlobal
