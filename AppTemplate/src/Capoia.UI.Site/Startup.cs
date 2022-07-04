@@ -27,6 +27,8 @@ namespace Capoia.UI.Site
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
             app.UseRouting();            
 
             app.UseEndpoints(endpoints =>
