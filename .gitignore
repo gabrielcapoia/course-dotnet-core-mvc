@@ -34,4 +34,4 @@ msbuild.wrn
 .vs/
 
 # Static files
-wwwroot/lib
+wwwroot/lib/
