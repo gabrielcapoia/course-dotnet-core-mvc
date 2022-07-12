@@ -3,6 +3,7 @@ using Capoia.UI.Site.Extensions;
 using Capoia.UI.Site.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,15 @@ namespace Capoia.UI.Site.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly ILogger<HomeController> logger;
         private readonly IOrderRepository orderRepository;
 
-        public HomeController(IOrderRepository orderRepository)
+        public HomeController(
+            IOrderRepository orderRepository, 
+            ILogger<HomeController> logger)
         {
             this.orderRepository = orderRepository;
+            this.logger = logger;
         }
 
         [AllowAnonymous]
@@ -65,6 +70,7 @@ namespace Capoia.UI.Site.Controllers
                 modelErro.Mensagem = "Ocorreu um erro! Tente novamente mais tarde ou contate nosso suporte.";
                 modelErro.Titulo = "Ocorreu um erro!";
                 modelErro.ErroCode = id;
+                logger.LogError("Log example");
             }
             else if (id == 404)
             {
