@@ -13,6 +13,8 @@ namespace Capoia.UI.Site.Config
 
             services.AddTransient<IOrderRepository, OrderRepository>();
 
+            services.AddScoped<AuditoriaFilter>();
+
             return services;
         }
     }
