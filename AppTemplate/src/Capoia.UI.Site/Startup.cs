@@ -50,6 +50,12 @@ namespace Capoia.UI.Site
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/erro/500");
+                app.UseStatusCodePagesWithRedirects("/erro/{0}");
+                app.UseHsts();
+            }
 
             app.UseStaticFiles();
 
