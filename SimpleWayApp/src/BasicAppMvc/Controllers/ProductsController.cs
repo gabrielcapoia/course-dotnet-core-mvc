@@ -12,22 +12,23 @@ using Microsoft.AspNetCore.Authorization;
 namespace BasicAppMvc.Controllers
 {
     [Authorize]
-    public class SuppliersController : Controller
+    public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public SuppliersController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Suppliers
+        // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Suppliers.ToListAsync());
+            var applicationDbContext = _context.Products.Include(p => p.Supplier);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Suppliers/Details/5
+        // GET: Products/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -35,40 +36,43 @@ namespace BasicAppMvc.Controllers
                 return NotFound();
             }
 
-            var supplier = await _context.Suppliers
+            var product = await _context.Products
+                .Include(p => p.Supplier)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (supplier == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(supplier);
+            return View(product);
         }
 
-        // GET: Suppliers/Create
+        // GET: Products/Create
         public IActionResult Create()
         {
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
             return View();
         }
 
-        // POST: Suppliers/Create
+        // POST: Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Supplier supplier)
+        public async Task<IActionResult> Create(Product product)
         {
             if (ModelState.IsValid)
             {
-                supplier.Id = Guid.NewGuid();
-                _context.Add(supplier);
+                product.Id = Guid.NewGuid();
+                _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(supplier);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", product.SupplierId);
+            return View(product);
         }
 
-        // GET: Suppliers/Edit/5
+        // GET: Products/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -76,22 +80,23 @@ namespace BasicAppMvc.Controllers
                 return NotFound();
             }
 
-            var supplier = await _context.Suppliers.FindAsync(id);
-            if (supplier == null)
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(supplier);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", product.SupplierId);
+            return View(product);
         }
 
-        // POST: Suppliers/Edit/5
+        // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Supplier supplier)
+        public async Task<IActionResult> Edit(Guid id, Product product)
         {
-            if (id != supplier.Id)
+            if (id != product.Id)
             {
                 return NotFound();
             }
@@ -100,12 +105,12 @@ namespace BasicAppMvc.Controllers
             {
                 try
                 {
-                    _context.Update(supplier);
+                    _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SupplierExists(supplier.Id))
+                    if (!ProductExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -116,10 +121,11 @@ namespace BasicAppMvc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(supplier);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", product.SupplierId);
+            return View(product);
         }
 
-        // GET: Suppliers/Delete/5
+        // GET: Products/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -127,30 +133,31 @@ namespace BasicAppMvc.Controllers
                 return NotFound();
             }
 
-            var supplier = await _context.Suppliers
+            var product = await _context.Products
+                .Include(p => p.Supplier)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (supplier == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(supplier);
+            return View(product);
         }
 
-        // POST: Suppliers/Delete/5
+        // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var supplier = await _context.Suppliers.FindAsync(id);
-            _context.Suppliers.Remove(supplier);
+            var product = await _context.Products.FindAsync(id);
+            _context.Products.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SupplierExists(Guid id)
+        private bool ProductExists(Guid id)
         {
-            return _context.Suppliers.Any(e => e.Id == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }
