@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capoia.UI.Site", "src\Capoia.UI.Site\Capoia.UI.Site.csproj", "{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Capoia.UI.Site", "src\Capoia.UI.Site\Capoia.UI.Site.csproj", "{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BasicTemplate", "BasicTemplate", "{D550E5FA-58EC-49D5-871C-C1087F765B5D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleWayApp", "SimpleWayApp", "{D79F12DC-EFF5-4526-83D7-3C42480893BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicAppMvc", "..\SimpleWayApp\src\BasicAppMvc\BasicAppMvc.csproj", "{5664A2A5-83B5-4699-8DD9-0B814985731C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,17 @@ Global
 		{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5664A2A5-83B5-4699-8DD9-0B814985731C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5664A2A5-83B5-4699-8DD9-0B814985731C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5664A2A5-83B5-4699-8DD9-0B814985731C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5664A2A5-83B5-4699-8DD9-0B814985731C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EA88B1CF-CEAA-4116-AD0D-D93AE16753B3} = {D550E5FA-58EC-49D5-871C-C1087F765B5D}
+		{5664A2A5-83B5-4699-8DD9-0B814985731C} = {D79F12DC-EFF5-4526-83D7-3C42480893BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {37EA918E-8F67-4245-854F-EAEB2C45B747}
