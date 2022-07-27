@@ -14,6 +14,10 @@ namespace Capoia.App.ViewModels
         public Guid Id { get; set; }
 
         [Required]
+        [DisplayName("Supplier")]
+        public Guid SupplierId { get; set; }
+
+        [Required]
         [StringLength(200)]
         public string Name { get; set; }
 
@@ -21,7 +25,7 @@ namespace Capoia.App.ViewModels
         [StringLength(1000)]
         public string Description { get; set; }
 
-        public IFormFile ImageUpload { get; set; }
+        //public IFormFile ImageUpload { get; set; }
 
         public string Image { get; set; }
 
@@ -34,7 +38,8 @@ namespace Capoia.App.ViewModels
         [DisplayName("Is Active?")]
         public bool IsActive { get; set; }
 
-        /* EF Relations */
         public SupplierViewModel Supplier { get; set; }
+
+        public IEnumerable<SupplierViewModel> Suppliers { get; set; }
     }
 }

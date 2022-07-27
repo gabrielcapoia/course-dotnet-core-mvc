@@ -1,4 +1,4 @@
-﻿using Capoia.App.Models;
+﻿using Capoia.App.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;

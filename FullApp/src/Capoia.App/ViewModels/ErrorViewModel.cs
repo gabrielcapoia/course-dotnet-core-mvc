@@ -1,6 +1,6 @@
 using System;
 
-namespace Capoia.App.Models
+namespace Capoia.App.ViewModels
 {
     public class ErrorViewModel
     {
