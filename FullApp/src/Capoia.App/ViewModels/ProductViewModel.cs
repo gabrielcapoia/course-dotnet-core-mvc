@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Capoia.App.Extensions;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +29,7 @@ namespace Capoia.App.ViewModels
 
         public string Image { get; set; }
 
+        [Moeda]
         [Required]
         public decimal Value { get; set; }
 
