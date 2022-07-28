@@ -2,9 +2,11 @@
 using BasicAppMvc.Models;
 using Capoia.App.ViewModels;
 using Capoia.Business.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Capoia.App.Controllers
@@ -54,6 +56,14 @@ namespace Capoia.App.Controllers
 
             if (!ModelState.IsValid) return View(productViewModel);
 
+            var imgPrefixo = Guid.NewGuid() + "_";
+            if (!await UploadArquivo(productViewModel.ImageUpload, imgPrefixo))
+            {
+                return View(productViewModel);
+            }
+
+            productViewModel.Image = imgPrefixo + productViewModel.ImageUpload.FileName;
+
             await productRepository.Add(mapper.Map<Product>(productViewModel));
             
             return RedirectToAction(nameof(Index));            
@@ -74,9 +84,29 @@ namespace Capoia.App.Controllers
         {
             if (id != productViewModel.Id) return NotFound();
 
+            var produtoAtualizacao = await GetProduct(id);
+            productViewModel.Supplier = produtoAtualizacao.Supplier;
+            productViewModel.Image = produtoAtualizacao.Image;
+
             if (!ModelState.IsValid) return View(productViewModel);
 
-            await productRepository.Update(mapper.Map<Product>(productViewModel));
+            if (productViewModel.ImageUpload != null)
+            {
+                var imgPrefixo = Guid.NewGuid() + "_";
+                if (!await UploadArquivo(productViewModel.ImageUpload, imgPrefixo))
+                {
+                    return View(productViewModel);
+                }
+
+                produtoAtualizacao.Image = imgPrefixo + productViewModel.ImageUpload.FileName;
+            }
+
+            produtoAtualizacao.Name = productViewModel.Name;
+            produtoAtualizacao.Description = productViewModel.Description;
+            produtoAtualizacao.Value = productViewModel.Value;
+            produtoAtualizacao.IsActive = productViewModel.IsActive;
+
+            await productRepository.Update(mapper.Map<Product>(produtoAtualizacao));
 
             return RedirectToAction(nameof(Index));            
         }
@@ -116,6 +146,26 @@ namespace Capoia.App.Controllers
             productViewModel.Suppliers = mapper.Map<IEnumerable<SupplierViewModel>>(await supplierRepository.GetAll());
 
             return productViewModel;
+        }
+
+        private async Task<bool> UploadArquivo(IFormFile arquivo, string imgPrefixo)
+        {
+            if (arquivo.Length <= 0) return false;
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", imgPrefixo + arquivo.FileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                ModelState.AddModelError(string.Empty, "Já existe um arquivo com este nome!");
+                return false;
+            }
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await arquivo.CopyToAsync(stream);
+            }
+
+            return true;
         }
     }
 }
