@@ -12,14 +12,17 @@ namespace Capoia.App.Controllers
     public class SuppliersController : BaseController
     {
         private readonly ISupplierRepository supplierRepository;
+        private readonly IAddressRepository addressRepository;
         private readonly IMapper mapper;
 
         public SuppliersController(
-            ISupplierRepository supplierRepository, 
+            ISupplierRepository supplierRepository,
+            IAddressRepository addressRepository,
             IMapper mapper)
         {
             this.supplierRepository = supplierRepository;
             this.mapper = mapper;
+            this.addressRepository = addressRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -99,7 +102,50 @@ namespace Capoia.App.Controllers
             await supplierRepository.Delete(id);
 
             return RedirectToAction(nameof(Index));
-        }       
+        }
+
+        public async Task<IActionResult> ObterEndereco(Guid id)
+        {
+            var fornecedor = await GetSupplierAddress(id);
+
+            if (fornecedor == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_DetalhesEndereco", fornecedor);
+        }
+
+        [Route("atualizar-endereco-fornecedor/{id:guid}")]
+        public async Task<IActionResult> AtualizarEndereco(Guid id)
+        {
+            var fornecedor = await GetSupplierAddress(id);
+
+            if (fornecedor == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_AtualizarEndereco", new SupplierViewModel { Address = fornecedor.Address });
+        }
+        
+        [Route("atualizar-endereco-fornecedor/{id:guid}")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AtualizarEndereco(SupplierViewModel fornecedorViewModel)
+        {
+            ModelState.Remove("Name");
+            ModelState.Remove("Document");
+
+            if (!ModelState.IsValid) return PartialView("_AtualizarEndereco", fornecedorViewModel);
+
+            await addressRepository.Update(mapper.Map<Address>(fornecedorViewModel.Address));
+
+            //if (!OperacaoValida()) return PartialView("_AtualizarEndereco", fornecedorViewModel);
+
+            var url = Url.Action("ObterEndereco", "Fornecedores", new { id = fornecedorViewModel.Address.SupplierId });
+            return Json(new { success = true, url });
+        }
 
         private async Task<SupplierViewModel> GetSupplierAddress(Guid id)
         {
