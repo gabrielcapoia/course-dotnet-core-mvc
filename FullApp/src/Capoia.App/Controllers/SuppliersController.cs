@@ -12,17 +12,18 @@ namespace Capoia.App.Controllers
     public class SuppliersController : BaseController
     {
         private readonly ISupplierRepository supplierRepository;
-        private readonly IAddressRepository addressRepository;
+        private readonly ISupplierService supplierService;
         private readonly IMapper mapper;
 
         public SuppliersController(
             ISupplierRepository supplierRepository,
-            IAddressRepository addressRepository,
-            IMapper mapper)
+            ISupplierService supplierService,
+            IMapper mapper,
+            INotificador notificador) : base(notificador)
         {
             this.supplierRepository = supplierRepository;
+            this.supplierService = supplierService;
             this.mapper = mapper;
-            this.addressRepository = addressRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -54,7 +55,9 @@ namespace Capoia.App.Controllers
             if (!ModelState.IsValid) return View(supplierViewModel);
 
             var supplier = mapper.Map<Supplier>(supplierViewModel);
-            await supplierRepository.Add(supplier);
+            await supplierService.Add(supplier);
+
+            if (!OperacaoValida()) return View(supplierViewModel);
 
             return RedirectToAction(nameof(Index));
         }
@@ -77,7 +80,9 @@ namespace Capoia.App.Controllers
             if (ModelState.IsValid) return View(supplierViewModel);
 
             var supplier = mapper.Map<Supplier>(supplierViewModel);
-            await supplierRepository.Update(supplier);
+            await supplierService.Update(supplier);
+
+            if (!OperacaoValida()) return View(supplierViewModel);
 
             return RedirectToAction(nameof(Index));
         }
@@ -99,7 +104,9 @@ namespace Capoia.App.Controllers
 
             if (supplierViewModel == null) return NotFound();
 
-            await supplierRepository.Delete(id);
+            await supplierService.Delete(id);
+
+            if (!OperacaoValida()) return View(supplierViewModel);
 
             return RedirectToAction(nameof(Index));
         }
@@ -139,9 +146,9 @@ namespace Capoia.App.Controllers
 
             if (!ModelState.IsValid) return PartialView("_AtualizarEndereco", fornecedorViewModel);
 
-            await addressRepository.Update(mapper.Map<Address>(fornecedorViewModel.Address));
+            await supplierService.UpdateAddress(mapper.Map<Address>(fornecedorViewModel.Address));
 
-            //if (!OperacaoValida()) return PartialView("_AtualizarEndereco", fornecedorViewModel);
+            if (!OperacaoValida()) return PartialView("_AtualizarEndereco", fornecedorViewModel);
 
             var url = Url.Action("ObterEndereco", "Fornecedores", new { id = fornecedorViewModel.Address.SupplierId });
             return Json(new { success = true, url });

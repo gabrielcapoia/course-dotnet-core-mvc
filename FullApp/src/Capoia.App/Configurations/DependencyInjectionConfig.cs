@@ -1,5 +1,7 @@
 ﻿using Capoia.App.Extensions;
 using Capoia.Business.Interfaces;
+using Capoia.Business.Notifications;
+using Capoia.Business.Services;
 using Capoia.Data.Context;
 using Capoia.Data.Repository;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -16,6 +18,10 @@ namespace Capoia.App.Configurations
             services.AddScoped<ISupplierRepository, SupplierRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
+
+            services.AddScoped<INotificador, Notificador>();
+            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<IProductService, ProductService>();
 
             return services;
         }

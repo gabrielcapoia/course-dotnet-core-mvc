@@ -15,16 +15,20 @@ namespace Capoia.App.Controllers
     {
         private readonly IProductRepository productRepository;
         private readonly ISupplierRepository supplierRepository;
+        private readonly IProductService productService;
         private readonly IMapper mapper;
 
         public ProductsController(
             IProductRepository productRepository,
             ISupplierRepository supplierRepository,
-            IMapper mapper)
+            IProductService productService,
+            IMapper mapper,
+            INotificador notificador) : base(notificador)
         {
             this.productRepository = productRepository;
-            this.mapper = mapper;
             this.supplierRepository = supplierRepository;
+            this.productService = productService;
+            this.mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
@@ -64,8 +68,10 @@ namespace Capoia.App.Controllers
 
             productViewModel.Image = imgPrefixo + productViewModel.ImageUpload.FileName;
 
-            await productRepository.Add(mapper.Map<Product>(productViewModel));
-            
+            await productService.Add(mapper.Map<Product>(productViewModel));
+
+            if (!OperacaoValida()) return View(productViewModel);
+
             return RedirectToAction(nameof(Index));            
         }
 
@@ -106,7 +112,9 @@ namespace Capoia.App.Controllers
             produtoAtualizacao.Value = productViewModel.Value;
             produtoAtualizacao.IsActive = productViewModel.IsActive;
 
-            await productRepository.Update(mapper.Map<Product>(produtoAtualizacao));
+            await productService.Update(mapper.Map<Product>(produtoAtualizacao));
+
+            if (!OperacaoValida()) return View(productViewModel);
 
             return RedirectToAction(nameof(Index));            
         }
@@ -128,7 +136,11 @@ namespace Capoia.App.Controllers
 
             if (productViewModel == null) return NotFound();
 
-            await productRepository.Delete(id);
+            await productService.Delete(id);
+
+            if (!OperacaoValida()) return View(productViewModel);
+
+            TempData["Sucesso"] = "Produto excluido com sucesso!";
 
             return RedirectToAction(nameof(Index));
         }
