@@ -1,4 +1,4 @@
-﻿using BasicAppMvc.Models;
+﻿using Capoia.Business.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

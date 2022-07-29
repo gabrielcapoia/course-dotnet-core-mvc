@@ -1,4 +1,4 @@
-﻿namespace BasicAppMvc.Models
+﻿namespace Capoia.Business.Models
 {
     public enum SupplierType
     {

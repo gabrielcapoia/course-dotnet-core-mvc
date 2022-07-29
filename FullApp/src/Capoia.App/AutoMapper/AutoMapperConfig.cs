@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
-using BasicAppMvc.Models;
 using Capoia.App.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Capoia.Business.Models;
 
 namespace Capoia.App.AutoMapper
 {

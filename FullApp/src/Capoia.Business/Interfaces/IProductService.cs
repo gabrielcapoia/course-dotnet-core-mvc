@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Capoia.Business.Interfaces
 {
-    public interface IAddressRepository : IRepository<Address>
+    public interface IProductService : IDisposable
     {
-        Task<Address> GetAddressBySupplier(Guid supplierId);
+        Task Add(Product product);
+        Task Update(Product product);
+        Task Delete(Guid id);
     }
 }

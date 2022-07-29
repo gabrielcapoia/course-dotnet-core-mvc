@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using BasicAppMvc.Models;
 using Capoia.App.ViewModels;
 using Capoia.Business.Interfaces;
+using Capoia.Business.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
